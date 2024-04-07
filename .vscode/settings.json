@@ -33,5 +33,15 @@
     "**/.vscode",
     "**/.vscode/**"
   ],
-  "C_Cpp_Runner.useAddressSanitizer": false
+  "C_Cpp_Runner.useAddressSanitizer": false,
+  "files.associations": {
+    "compare": "cpp",
+    "concepts": "cpp",
+    "type_traits": "cpp",
+    "cmath": "cpp",
+    "limits": "cpp",
+    "new": "cpp",
+    "client_repository.h": "c",
+    "client_service.h": "c"
+  }
 }
