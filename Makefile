@@ -11,7 +11,7 @@ SRCS := $(wildcard $(SRC_DIR)/**/*.c) $(wildcard $(SRC_DIR)/*.c)
 OBJS := $(patsubst $(SRC_DIR)/**/*.c,$(BUILD_DIR)/%.o,$(SRCS))
 
 # name of program (Sysbansi for SImple BANking SYStem in reverse)
-TARGET = Sysbansi
+TARGET = sysbansi
 
 # Rule for build executable program
 $(BIN_DIR)/$(TARGET): $(OBJS)
