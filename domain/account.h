@@ -6,9 +6,10 @@
 
 enum AccountType { DEBIT, CHECKING };
 
+#define RECORD_SIZE 300
 typedef struct {
-    int id;
-    char account_number[20];
+    int id; //4 bytes = 32 bits = 2^32 (10 digits o 10 caracteres en archivo)
+    char account_number[20]; 
     enum AccountType account_type;
     double balance;
     int client_id;  
