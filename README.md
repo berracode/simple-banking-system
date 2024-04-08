@@ -12,7 +12,7 @@ Simple banking system will be able to execute the following operations (all oper
 
 Previous operations include the generation of the transaction record.
 
-## Architecture
+## Hexagonal Architecture
 
 This is the approximate architecture that I am using for the project. I wanted it to be a project with a couple of details.
 
