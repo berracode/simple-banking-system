@@ -2,9 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "cli/cli.h"
 
 int main(){
-    printf("hola mudnos");
+    
+    create_client_cli();
 
     
     return 0;

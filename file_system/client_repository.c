@@ -1,9 +1,10 @@
 #include <stdio.h>
 
-#include "repo/client_repository.h"
+#include "../repo/client_repository.h"
 
-void create_client(Client *client){
+void save_client(Client *client){
     printf("llamando adaptador secundario (que implementa puerto secundario o de salida)");
+    printf("phone: %s\n", client->phone_number);
 
 }
 

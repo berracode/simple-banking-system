@@ -2,6 +2,7 @@
 #define ACCOUNT_H
 
 #include "transfer.h"
+#include "transaction.h"
 
 enum AccountType { DEBIT, CHECKING };
 

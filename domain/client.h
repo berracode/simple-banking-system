@@ -14,4 +14,4 @@ typedef struct {
     struct Account *accounts; //account's list
 } Client;
 
-#endif 
+#endif /* CLIENT_H */

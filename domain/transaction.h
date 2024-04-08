@@ -19,4 +19,4 @@ typedef struct {
     struct Transfer *transfer;
 } Transaction;
 
-#endif
+#endif /*TRANSACTION_H*/

@@ -42,6 +42,11 @@
     "limits": "cpp",
     "new": "cpp",
     "client_repository.h": "c",
-    "client_service.h": "c"
+    "client_service.h": "c",
+    "stdio.h": "c",
+    "cli.h": "c",
+    "account.h": "c",
+    "transfer.h": "c",
+    "client.h": "c"
   }
 }

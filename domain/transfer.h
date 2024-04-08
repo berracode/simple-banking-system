@@ -12,4 +12,4 @@ typedef struct {
 } Transfer;
 
 
-#endif
+#endif /* TRANSFER_H */
