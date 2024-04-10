@@ -71,7 +71,6 @@ int get_index(enum BinFile bin_file) {
             file_name = "transfer_index";
             index = get_index_from_file(file_name);
             break;
-        
         default:
             return -1;
             break;

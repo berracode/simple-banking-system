@@ -4,7 +4,7 @@
 void clear_input_buffer();
 void menu();
 void options();
-void create_client_cli();
+void create_client_cli(int *id_client);
 void get_by_random_index_cli();
 void create_account_cli();
 

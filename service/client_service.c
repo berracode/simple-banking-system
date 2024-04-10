@@ -29,8 +29,34 @@ void create_client(Client *client){
 
     //FINALMENTE GUARDANDO
     save_client(client);
-    
 }
+
+void get_client_by_document(const char *document, int *id_client) {
+
+    printf("document: %s\n", document);
+
+    // Verificar si document es NULL
+    if (document == NULL) {
+        perror("Document is NULL\n");
+        return;
+    }
+
+    if(document[0] == '0') {
+        perror("Invalid document\n");
+        return;
+    }
+
+    Client client;
+    fetch_by_document(document, &client);
+    if(client.id < 1) {
+        *id_client = -1;
+        return;
+    }
+
+    *id_client =  client.id;
+
+}
+
 
 void get_all_clients(){
     //to do

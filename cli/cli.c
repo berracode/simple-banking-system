@@ -43,7 +43,6 @@ void options() {
         case 99:
             exit(0);
             break;
-        
         default:
             system("clear");
             menu();
@@ -70,8 +69,6 @@ void commands_init() {
     printf("BANKING SYSTEM FOR YOU BABY ;)\n");
     printf("What do you want to do?\n\n");
     menu();
-    
-    
 }
 
 
@@ -80,6 +77,7 @@ void create_account_cli(){
     Account account;
     char exits = 0;
     int id_client = 0;
+    char *document = malloc(30*sizeof(char));
     do
     {
         system("clear");
@@ -93,24 +91,23 @@ void create_account_cli(){
         printf("exist: %c\n", exits);
         clear_input_buffer();
         if(exits == '1') {
-            //buscar cliente por Documento
             printf("Sí\n");
+            printf("Ingrese documento del cliente: ");
+            scanf("%s", document);
+            
+            get_client_by_document(document, &id_client);
+            if(id_client == -1){
+                printf("Client not found\n");
+                free(document);
+                return;
+            }
+            free(document);
         } else {
             //crear cliente
             printf("No\n");
+            create_client_cli(&id_client);
         }
     } while (exits != '1' && exits != '2');
-    
-
-    if(exits == '1') {
-        // TO DO
-        //buscar cliente por Documento 
-        printf("Sí\n");
-    } else {
-        //crear cliente
-        printf("No\n");
-        create_client_cli(&id_client);
-    }
 
     printf("Ingrese el número de cuenta: ");
     scanf("%s", account.account_number);

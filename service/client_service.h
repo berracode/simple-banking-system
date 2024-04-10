@@ -7,6 +7,8 @@ void create_client(Client *client);
 
 void get_all_clients();
 
+void get_client_by_document(const char *document, int *id_client);
+
 void get_by_random_index(int index);
 
 #endif
