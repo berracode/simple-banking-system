@@ -2,10 +2,15 @@
 #include <stddef.h>
 
 #include "client_service.h"
+#include "file_system.h"
 #include "../repo/client_repository.h"
 
 void create_client(Client *client){
     printf("client service _ create_client\n");
+
+     // leer archivo de indices. SIno existe, agregar el indice 0, 
+    // SI EXISTE, incrementarlo, volverlo a escribir y asigarlo al nuevo cliente
+    client->id = get_index(CLIENT_FILE); // I must think how to increase this ID
     
     printf("id: %d\n", client->id);
     printf("Name: %s\n", client->full_name);

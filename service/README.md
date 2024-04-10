@@ -1,4 +1,4 @@
-# Standard name functions for REPOSITORIES
+# Standard name functions for SERVICES
 
 ## BASE
 - create

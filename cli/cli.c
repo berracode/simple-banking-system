@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 
 #include "cli.h"
 #include "../service/client_service.h"
+#include "../service/account_service.h"
 
 void clear_input_buffer() {
     int c;
@@ -29,6 +31,10 @@ void options() {
             get_by_random_index_cli();
             break;
         case 4:
+            system("clear");
+            create_account_cli();
+            break;
+        case 99:
             exit(0);
             break;
         
@@ -44,7 +50,8 @@ void menu(){
     printf("1. create client\n");
     printf("2. list all client\n");
     printf("3. get by index\n");
-    printf("4. exit\n");
+    printf("4. create accout\n");
+    printf("99. exit\n");
     printf("Enter your option: ");
 
     options();
@@ -61,6 +68,52 @@ void commands_init() {
 }
 
 
+
+void create_account_cli(){
+    Account account;
+    char exits = 0;
+    do
+    {
+        system("clear");
+        printf("CREATE ACCOUNT\n");
+
+        // pregutar si el cliente ya existe.
+        printf("1. Cliente existe.\n");
+        printf("2. Cliente no existe.\n");
+        printf("Ingrese su opción: ");
+        scanf("%c", &exits);
+        printf("exist: %c\n", exits);
+        clear_input_buffer();
+        if(exits == '1') {
+            //buscar cliente por Documento
+            printf("Sí\n");
+        } else {
+            //crear cliente
+            printf("No\n");
+        }
+    } while (exits != '1' && exits != '2');
+    
+
+    if(exits == '1') {
+        //buscar cliente por Documento
+        printf("Sí\n");
+    } else {
+        //crear cliente
+        printf("No\n");
+        create_client_cli();
+    }
+    
+  
+
+    account.id = 1;
+
+    create_account(&account);
+
+    // suponiendo que el cliente existe - buscar por documento.
+
+
+    
+}
 
 void create_client_cli(){
     printf("CREATE CLIENT\n");
@@ -83,7 +136,6 @@ void create_client_cli(){
     fgets(new_client.phone_number, sizeof(new_client.phone_number), stdin);
     strtok(new_client.phone_number, "\n");
 
-    new_client.id = 1; // I must think how to increase this ID
     create_client(&new_client);
 
 }
