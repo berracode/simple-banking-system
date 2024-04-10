@@ -13,14 +13,16 @@ void clear_input_buffer() {
 }
 
 void options() {
-     int i;
+    int i;
+    int id_client = 0;
     scanf("%d", &i);
     clear_input_buffer();
 
     switch (i){
         case 1:
             system("clear");
-            create_client_cli();
+            create_client_cli(&id_client);
+            printf("CLIENTE CREADO CON EXITO: %d\n", id_client);
             break;
         case 2:
             system("clear");
@@ -33,6 +35,10 @@ void options() {
         case 4:
             system("clear");
             create_account_cli();
+            break;
+        case 5:
+            system("clear");
+            get_all_accounts();
             break;
         case 99:
             exit(0);
@@ -51,6 +57,7 @@ void menu(){
     printf("2. list all client\n");
     printf("3. get by index\n");
     printf("4. create accout\n");
+    printf("5. list all accouts\n");
     printf("99. exit\n");
     printf("Enter your option: ");
 
@@ -72,6 +79,7 @@ void commands_init() {
 void create_account_cli(){
     Account account;
     char exits = 0;
+    int id_client = 0;
     do
     {
         system("clear");
@@ -95,27 +103,33 @@ void create_account_cli(){
     
 
     if(exits == '1') {
-        //buscar cliente por Documento
+        // TO DO
+        //buscar cliente por Documento 
         printf("Sí\n");
     } else {
         //crear cliente
         printf("No\n");
-        create_client_cli();
+        create_client_cli(&id_client);
     }
-    
-  
 
-    account.id = 1;
+    printf("Ingrese el número de cuenta: ");
+    scanf("%s", account.account_number);
+
+    printf("Ingrese el tipo de cuenta (0 para ahorros, 1 para corriente): ");
+    int account_type_input;
+    scanf("%d", &account_type_input);
+    account.account_type = account_type_input == 0 ? DEBIT : CHECKING;
+
+    printf("Ingrese el balance de la cuenta: ");
+    scanf("%lf", &account.balance);
+
+    account.client_id = id_client;
 
     create_account(&account);
 
-    // suponiendo que el cliente existe - buscar por documento.
-
-
-    
 }
 
-void create_client_cli(){
+void create_client_cli(int *id_client){
     printf("CREATE CLIENT\n");
 
     Client new_client;
@@ -137,6 +151,7 @@ void create_client_cli(){
     strtok(new_client.phone_number, "\n");
 
     create_client(&new_client);
+    *id_client = new_client.id;
 
 }
 

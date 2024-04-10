@@ -4,6 +4,7 @@
 #include "../domain/account.h"
 
 void create_account(Account *account);
+void get_all_accounts();
 
 
 
