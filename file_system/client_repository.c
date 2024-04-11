@@ -1,10 +1,13 @@
 #include <stdio.h>
-#include <stdlib.h> // Incluimos stdlib.h para usar malloc
-
+#include <stdlib.h>
 #include <string.h>
 
 #include "../repo/client_repository.h"
 #include "print_util.h"
+#include "file_system.h"
+#include "../constants/constants.h"
+
+
 
 int column_widths[] = {COLUMN_ID_WIDTH, COLUMN_NAME_WIDTH, COLUMN_DOCUMENT_WIDTH, COLUMN_ADDRESS_WIDTH, COLUMN_PHONE_WIDTH};
 
@@ -13,25 +16,22 @@ char *headers[] = {"ID", "Nombre", "Documento", "Direccion", "Telefono"};
 void save_client(Client *client)
 {
     printf("llamando adaptador secundario (que implementa puerto secundario o de salida)\n");
-
-    // Abrir el archivo en modo de escritura binaria
-    FILE *file = fopen("client.bin", "ab");
+    FILE *file = fopen(CLIENT_DB, "ab");
     if (file == NULL)
     {
         perror("Error al abrir el archivo");
         // return 1;
     }
 
-    // Escribir el número en el archivo
+    client->id = get_index(CLIENT_FILE);
     fwrite(client, sizeof(Client), 1, file);
 
-    // Cerrar el archivo
     fclose(file);
 }
 
 void fetch_all_clients()
 {
-    FILE *file = fopen("client.bin", "rb");
+    FILE *file = fopen(CLIENT_DB, "rb");
     if (file == NULL)
     {
         perror("Error al abrir el archivo");
@@ -93,7 +93,7 @@ void fetch_by_random_index(int index)
     long seek_position = (index - 1) * sizeof(Client);
     printf("posicion a buscar: %ld\n", seek_position);
 
-    FILE *file = fopen("client.bin", "rb");
+    FILE *file = fopen(CLIENT_DB, "rb");
     if (file == NULL)
     {
         perror("Error al abrir el archivo");
@@ -132,7 +132,7 @@ void fetch_by_document(const char *document, Client *client)
 
     printf("client to find: %s\n", document);
 
-    FILE *file = fopen("client.bin", "rb");
+    FILE *file = fopen(CLIENT_DB, "rb");
     if (file == NULL)
     {
         perror("Error al abrir el archivo\n");

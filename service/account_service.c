@@ -1,15 +1,10 @@
 #include <stdio.h>
 #include <stddef.h>
-
-#include "file_system.h"
 #include "../repo/account_repository.h"
 
 
 void create_account(Account *account){
     printf("Creando cuenta...\n");
-
-    account->id = get_index(ACCOUNT_FILE);
-
     printf("ID: %d\n", account->id);
     printf("Número de cuenta: %s\n", account->account_number);
     printf("Tipo de cuenta: %s\n", account->account_type == DEBIT ? "Ahorros" : "Corriente");

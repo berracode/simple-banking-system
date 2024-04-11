@@ -2,30 +2,17 @@
 #include <stddef.h>
 
 #include "client_service.h"
-#include "file_system.h"
 #include "../repo/client_repository.h"
 
 void create_client(Client *client){
     printf("client service _ create_client\n");
-
-     // leer archivo de indices. SIno existe, agregar el indice 0, 
-    // SI EXISTE, incrementarlo, volverlo a escribir y asigarlo al nuevo cliente
-    client->id = get_index(CLIENT_FILE); // I must think how to increase this ID
     
-    printf("id: %d\n", client->id);
     printf("Name: %s\n", client->full_name);
     printf("document: %s\n", client->document);
     printf("phone: %s\n", client->phone_number);
     printf("address: %s\n", client->address);
 
-    printf("id: Tamaño = %zu bytes, Desplazamiento = %zu bytes\n", sizeof(int), offsetof(Client, id));
-    printf("full_name: Tamaño = %zu bytes, Desplazamiento = %zu bytes\n", sizeof(char[100]), offsetof(Client, full_name));
-    printf("document: Tamaño = %zu bytes, Desplazamiento = %zu bytes\n", sizeof(char[30]), offsetof(Client, document));
-    printf("address: Tamaño = %zu bytes, Desplazamiento = %zu bytes\n", sizeof(char[100]), offsetof(Client, address));
-    printf("phone_number: Tamaño = %zu bytes, Desplazamiento = %zu bytes\n", sizeof(char[20]), offsetof(Client, phone_number));
-    printf("accounts: Tamaño = %zu bytes, Desplazamiento = %zu bytes\n", sizeof(struct Account*), offsetof(Client, accounts));
-
-     printf("Size of Client struct: %zu bytes\n", sizeof(Client));
+    printf("Size of Client struct: %zu bytes\n", sizeof(Client));
 
     //FINALMENTE GUARDANDO
     save_client(client);

@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "file_system.h"
+#include "../constants/constants.h"
 
-const char *BASE_INDEX = "index/";
 
 char *concatenate_filename(const char *filename) {
     size_t base_len = strlen(BASE_INDEX);
@@ -56,19 +56,19 @@ int get_index(enum BinFile bin_file) {
 
     switch (bin_file) {
         case CLIENT_FILE:
-            file_name = "client_index";
+            file_name = CLIENT_INDEX;
             index = get_index_from_file(file_name);
             break;
         case ACCOUNT_FILE:
-            file_name = "account_index";
+            file_name = ACCOUNT_INDEX;
             index = get_index_from_file(file_name);
             break;
         case TRANSACTION_FILE:
-            file_name = "transaction_index";
+            file_name = TRANSACTION_INDEX;
             index = get_index_from_file(file_name);
             break;
         case TRANSFER_FILE:
-            file_name = "transfer_index";
+            file_name = TRANSFER_INDEX;
             index = get_index_from_file(file_name);
             break;
         default:
