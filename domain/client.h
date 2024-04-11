@@ -9,6 +9,7 @@ typedef struct {
     char document[30];
     char address[100];
     char phone_number[20];
+    char password[10];
 
     //puntero
     struct Account *accounts; //account's list
