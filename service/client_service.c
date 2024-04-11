@@ -18,7 +18,7 @@ void create_client(Client *client){
     save_client(client);
 }
 
-void get_client_by_document(const char *document, int *id_client) {
+void get_client_by_document(const char *document, Client *client) {
 
     printf("document: %s\n", document);
 
@@ -33,14 +33,7 @@ void get_client_by_document(const char *document, int *id_client) {
         return;
     }
 
-    Client client;
-    fetch_by_document(document, &client);
-    if(client.id < 1) {
-        *id_client = -1;
-        return;
-    }
-
-    *id_client =  client.id;
+    fetch_by_document(document, client);
 
 }
 

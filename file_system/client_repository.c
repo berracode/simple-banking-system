@@ -127,7 +127,7 @@ void fetch_by_random_index(int index)
     fclose(file);
 }
 
-void fetch_by_document(const char *document, Client *client)
+void fetch_by_document(const char *document, Client *client_to_find)
 {
 
     printf("client to find: %s\n", document);
@@ -136,7 +136,7 @@ void fetch_by_document(const char *document, Client *client)
     if (file == NULL)
     {
         perror("Error al abrir el archivo\n");
-        client->id = -1;
+        client_to_find->id = -1;
         return;
     }
 
@@ -146,9 +146,10 @@ void fetch_by_document(const char *document, Client *client)
     print_row(column_widths, headers, sizeof(headers) / sizeof(headers[0]));
     print_separator_line(column_widths, sizeof(column_widths) / sizeof(column_widths[0]));
 
-    while (fread(client, sizeof(Client), 1, file) == 1)
+    Client client;
+    while (fread(&client, sizeof(Client), 1, file) == 1)
     {
-        if (strcmp(document, client->document) == 0){
+        if (strcmp(document, client.document) == 0){
             found = 1;
             char **data = malloc(5 * sizeof(char *));
             if (data == NULL){
@@ -162,11 +163,11 @@ void fetch_by_document(const char *document, Client *client)
                     return;
                 }
             }
-            snprintf(data[0], column_widths[0] + 1, "%d", client->id);
-            strcpy(data[1], client->full_name);
-            strcpy(data[2], client->document);
-            strcpy(data[3], client->address);
-            strcpy(data[4], client->phone_number);
+            snprintf(data[0], column_widths[0] + 1, "%d", client.id);
+            strcpy(data[1], client.full_name);
+            strcpy(data[2], client.document);
+            strcpy(data[3], client.address);
+            strcpy(data[4], client.phone_number);
             print_row(column_widths, data, 5);
 
             for (int i = 0; i < 5; i++){
@@ -174,13 +175,14 @@ void fetch_by_document(const char *document, Client *client)
             }
             free(data);
             print_separator_line(column_widths, sizeof(column_widths) / sizeof(column_widths[0]));
+            memcpy(client_to_find, &client, sizeof(Client));
             break;
         }
     }
     if (!found)
     {
         printf("Client with document %s was not found\n", document);
-        client->id = -1;
+        client_to_find->id = -1;
     }
     fclose(file);
 }
