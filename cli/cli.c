@@ -94,6 +94,7 @@ void transfer_money_cli(Client *client){
 }
 
 void banking_transactions(Client *client) {
+    printf("\t\t#####  BANKING TRANSACTIONS  #####\n\n\n");
     // preguntarle de que cuenta quiere las transacciones
     Account account_to_find;
     printf("Enter the account: ");
@@ -104,6 +105,9 @@ void banking_transactions(Client *client) {
         printf("Account does not belong to the user\n");
         return;
     }
+    system("clear");
+    printf("\t\t#####  BANKING TRANSACTIONS  #####\n\n\n");
+
     // con el ID de la CUENTA, buscar transacciones por id cuenta
     get_by_account_id(account_to_find.id);
     //mostrar todas las transacciones de la siguiente forma: 
@@ -113,9 +117,40 @@ void banking_transactions(Client *client) {
 
 }
 
-void options_client(Client *client) {
+void back_menu_client_options(int *options, Client *client){
+    scanf("%d", options);
+    clear_input_buffer();
+    switch (*options){
+    case 1:
+        menu_client(client);
+        break;
+    default:
+        exit(0);
+        break;
+    }
+
+}
+
+void back_menu_client(Client *client){
+    int option = 0;
+    do{
+        printf("--------------------------------------------------\n\n");
+        printf("[ 1 ]. Back\n");
+        printf("[ 2 ]. exit\n");
+        printf("Enter your option: ");
+
+        back_menu_client_options(&option, client);
+    } while (option !=1 && option != 2);
+    
+       
+
+
+}
+
+int options_client(Client *client) {
 
     int i;
+    int incorrect_option = 0;
     scanf("%d", &i);
     clear_input_buffer();
 
@@ -138,50 +173,65 @@ void options_client(Client *client) {
             printf("BALANCE\n");
             break;
         case 5:
-            system("clear");
             printf("LIST MY ACCOUNTS\n");
             break;
         case 6:
             system("clear");
-            printf("BANKING TRANSACTIONS\n");
             banking_transactions(client);
+            break;
+        case 7:
+            system("clear");
+            printf("Log out\n");
+            menu();
             break;
         case 99:
             exit(0);
             break;
         default:
+            incorrect_option = 1;
             system("clear");
-            menu();
+            printf("You have to select a correct option.\n");
     }
+    if (incorrect_option != 1){
+        back_menu_client(client);
+    }
+    return i;
 }
 
 void menu_client(Client *client){
 
-    system("clear");
-	printf("\n\tWelcome %s\n",client->full_name);
+    int option = 0;
+    
+    do{
+        system("clear");
+        printf("\t\t#####  WELCOME DEAR %s  #####\n\n",client->full_name);
 
-    printf("1. Deposit money\n");
-    printf("2. withdrawals\n");
-    printf("3. transfer\n");
-    printf("4. balance\n");
-    printf("5. list my accounts\n");
-    printf("6. banking transactions\n");
-    printf("99. exit\n");
-    printf("Enter your option: ");
+        printf("[ 1 ]. Deposit money\n");
+        printf("[ 2 ]. Withdrawals\n");
+        printf("[ 3 ]. Transfer\n");
+        printf("[ 4 ]. Check balance\n");
+        printf("[ 5 ]. List my accounts\n");
+        printf("[ 6 ]. Banking transactions\n");
+        printf("[ 7 ]. Log out\n");
+        printf("[ 99]. exit\n");
+        printf("Enter your option: ");
 
-    options_client(client);
+        option = options_client(client);
+    } while (option != 99 && option != 7);
 
 }
 
 void login(){
+    printf("\t\t#####  LOGIN  #####\n\n");
+
     //user ingresa su documento y su password. 
     //se busca si el usuario con documento existe
     //se compara si la password == a la ingresada por el user.
     //si sí, muestra el menu para realizar deposito, retiro, o transferencia
     //sino, le muestra usuario o contraseña incorrecta, volver a intentarlo, salir o volver al menu anterior
     Client client;
-    char *document_to_find = malloc(30*sizeof(char));
-    char *password_entered = malloc(10*sizeof(char));
+    char document_to_find[30];
+    char password_entered[10];
     printf("Enter your document: ");
     scanf("%s", document_to_find);
 
@@ -208,32 +258,25 @@ void login(){
 
 void options() {
     int i;
-    int id_client = 0;
     scanf("%d", &i);
     clear_input_buffer();
 
     switch (i){
         case 1:
             system("clear");
-            printf("LOG IN\n");
             login();
-            break;
-        case 11:
-            system("clear");
-            create_client_cli(&id_client);
-            printf("CLIENTE CREADO CON EXITO: %d\n", id_client);
             break;
         case 2:
             system("clear");
-            get_all_clients();
+            create_account_cli();
             break;
         case 3:
             system("clear");
-            get_by_random_index_cli();
+            get_all_clients();
             break;
         case 4:
             system("clear");
-            create_account_cli();
+            get_by_random_index_cli();
             break;
         case 5:
             system("clear");
@@ -250,14 +293,16 @@ void options() {
 }
 
 void menu(){
+    printf("\t\t\t\tBANKING SYSTEM \n\n");
+    printf("\t\t#####  WELCOME TO THE MAIN MENU BABY  #####\n\n");
+    printf("What do you want to do?\n\n");
 
-    printf("1. Login to your account \n");
-    printf("11. create client\n");
-    printf("2. list all client\n");
-    printf("3. get by index\n");
-    printf("4. Register an account?\n");
-    printf("5. list all accouts\n");
-    printf("99. exit\n");
+    printf("[ 1 ]. Login to your account \n");
+    printf("[ 2 ]. Register an account?\n");
+    printf("[ 3 ]. List all clients\n");
+    printf("[ 4 ]. Get client by some ID (only for test)\n");
+    printf("[ 5 ]. List all accouts. (only for test)\n");
+    printf("[ 99]. exit\n");
     printf("Enter your option: ");
 
     options();
@@ -265,9 +310,6 @@ void menu(){
 }
 
 void commands_init() {
-
-    printf("BANKING SYSTEM FOR YOU BABY ;)\n");
-    printf("What do you want to do?\n\n");
     menu();
 }
 
