@@ -4,7 +4,6 @@
 #include "file_system.h"
 #include "../constants/constants.h"
 
-
 char *concatenate_filename(const char *filename) {
     size_t base_len = strlen(BASE_INDEX);
     size_t filename_len = strlen(filename);
@@ -15,68 +14,52 @@ char *concatenate_filename(const char *filename) {
     }
     strcpy(result, BASE_INDEX);
     strcat(result, filename);
-    printf("RUta completa: %s\n", result);
 
     return result;
 }
 
-int get_index_from_file(const char *filename) {
+int get_index_from_file(const char *filename, enum ModeGetIndex mode_get_index) {
     // Abre el archivo si existe
     char *file_path = concatenate_filename(filename);
+    int current_value;
     FILE *file = fopen(file_path, "rb+");
-    if (file == NULL) {
-        file = fopen(file_path, "wb+"); //CREO UNO si no existe
+    if (file == NULL && mode_get_index != READING) {
+        file = fopen(file_path, "wb+");
         if (file == NULL) {
             perror("Error al abrir o crear el archivo");
-            return -1; // Retorna un valor de error
+            free(file_path);
+            return -1;
         }
-        int initial_value = 1;
-        fwrite(&initial_value, sizeof(int), 1, file); //ESCRIBO EL VAlor inicial
-        free(file_path);
-        fclose(file);
-        return initial_value;
+        fwrite(&current_value, sizeof(int), 1, file);
+    } else if (file == NULL && mode_get_index == READING){
+        //archivo no existe, y estoy tratando de leer el valor, entonces el valor es 0, por tanto no hay nada que leer
+        current_value = -1;
+    } else if (file != NULL && mode_get_index == READING){
+        //archivo si existe, y estoy tratando de leer el valor, entonces es > 0
+        fread(&current_value, sizeof(int), 1, file);
+    } else {
+        //archivo existe y estoy tratando de leer e incrementar su valor
+        fread(&current_value, sizeof(int), 1, file);
+        current_value++;
+        fseek(file, 0, SEEK_SET);
+        fwrite(&current_value, sizeof(int), 1, file);
     }
-
-    int current_value;
-    fread(&current_value, sizeof(int), 1, file);
-    current_value++;
-    fseek(file, 0, SEEK_SET);
-    fwrite(&current_value, sizeof(int), 1, file);
-
-    fclose(file);
+    if(file != NULL) {
+        fclose(file);
+    }
     free(file_path);
 
     return current_value;
+
 }
+int get_index(enum BinFile bin_file, enum ModeGetIndex mode_get_index) {
+    const char *file_names[] = {CLIENT_INDEX, ACCOUNT_INDEX, TRANSACTION_INDEX, TRANSFER_INDEX};
+    int index = -1;
 
-int get_index(enum BinFile bin_file) {
-
-    const char *file_name;
-
-    int index;
-
-    switch (bin_file) {
-        case CLIENT_FILE:
-            file_name = CLIENT_INDEX;
-            index = get_index_from_file(file_name);
-            break;
-        case ACCOUNT_FILE:
-            file_name = ACCOUNT_INDEX;
-            index = get_index_from_file(file_name);
-            break;
-        case TRANSACTION_FILE:
-            file_name = TRANSACTION_INDEX;
-            index = get_index_from_file(file_name);
-            break;
-        case TRANSFER_FILE:
-            file_name = TRANSFER_INDEX;
-            index = get_index_from_file(file_name);
-            break;
-        default:
-            return -1;
-            break;
+    if (bin_file >= CLIENT_FILE && bin_file <= TRANSFER_FILE) {
+        const char *file_name = file_names[bin_file];
+        index = get_index_from_file(file_name, mode_get_index);
     }
 
     return index;
-
 }

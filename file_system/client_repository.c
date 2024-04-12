@@ -23,7 +23,11 @@ void save_client(Client *client)
         // return 1;
     }
 
-    client->id = get_index(CLIENT_FILE);
+    client->id = get_index(CLIENT_FILE, INCREASE);
+    if(client->id == -1){
+        printf("Could not save client\n");
+        return;
+    }
     fwrite(client, sizeof(Client), 1, file);
 
     fclose(file);

@@ -17,7 +17,11 @@ void save_account(Account *account){
         //return 1;
     }
 
-    account->id = get_index(ACCOUNT_FILE);
+    account->id = get_index(ACCOUNT_FILE, INCREASE);
+    if(account->id == -1){
+        printf("Could not save account\n");
+        return;
+    }
 
     fwrite(account, sizeof(Account), 1, file);
 

@@ -17,7 +17,11 @@ void register_transaction(Transaction *transaction){
         //return 1;
     }
 
-    transaction->id = get_index(TRANSACTION_FILE);
+    transaction->id = get_index(TRANSACTION_FILE, INCREASE);
+    if(transaction->id == -1){
+        printf("Could not save transaction\n");
+        return;
+    }
     printf("real id transaction: %d", transaction->id);
     time_t current_time;
     time(&current_time);

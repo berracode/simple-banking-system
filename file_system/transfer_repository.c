@@ -17,7 +17,11 @@ void register_transfer(Transfer *transfer){
         //return 1;
     }
 
-    transfer->id = get_index(TRANSFER_FILE);
+    transfer->id = get_index(TRANSFER_FILE, INCREASE);
+    if(transfer->id == -1){
+        printf("Could not save transfer\n");
+        return;
+    }
     printf("Real transfer id: %d\n", transfer->id);
     time_t current_time;
     time(&current_time);
