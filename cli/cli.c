@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+#include <time.h>
+
 
 #include "cli.h"
 #include "../service/client_service.h"
@@ -17,8 +19,6 @@ void clear_input_buffer() {
 }
 
 void transfer_money_cli(Client *client){
-    print_client(client);
-
     // pedirle la cuenta origen al usuario
     // pedirle la cuenta destino
     // cantidad a transferir
@@ -62,12 +62,19 @@ void transfer_money_cli(Client *client){
 
 
     // LUEGO registrarla como una transaccion (id, tipo transferencia, monto, cuenta id es cuenta origen)
-    Transaction new_transaction;
-    new_transaction.amount = amount_to_transfer;
-    new_transaction.account_id = origin_account.id;
-    new_transaction.transfer_id = new_transfer.id;
-    new_transaction.transaction_type = TRANSFER;
-    create_transaction(&new_transaction);
+    Transaction origin_transaction;
+    origin_transaction.amount = amount_to_transfer;
+    origin_transaction.account_id = origin_account.id;
+    origin_transaction.transfer_id = new_transfer.id;
+    origin_transaction.transaction_type = TRANSFER;
+    create_transaction(&origin_transaction);
+
+    Transaction destination_transaction;
+    destination_transaction.amount = amount_to_transfer;
+    destination_transaction.account_id = destination_account.id;
+    destination_transaction.transfer_id = new_transfer.id;
+    destination_transaction.transaction_type = TRANSFER;
+    create_transaction(&destination_transaction);
 
 
     // restar el dinero de la cuenta origen
@@ -79,6 +86,26 @@ void transfer_money_cli(Client *client){
     new_balance = destination_account.balance + amount_to_transfer;
     printf("New balance destination account: %lf\n", new_balance);
     update_balance(destination_account.id, new_balance, &destination_account);
+}
+
+void banking_transactions(Client *client) {
+    // preguntarle de que cuenta quiere las transacciones
+    Account account_to_find;
+    printf("Enter the account: ");
+    scanf("%s", account_to_find.account_number);
+    // validar si la cuenta es existe y si es de él
+    get_by_account_number(account_to_find.account_number,&account_to_find);
+    if(client->id != account_to_find.client_id){
+        printf("Account does not belong to the user\n");
+        return;
+    }
+    // con el ID de la CUENTA, buscar transacciones por id cuenta
+    get_by_account_id(account_to_find.id);
+    //mostrar todas las transacciones de la siguiente forma: 
+    // id transaccion | tipo transaccion | cuenta | fecha |
+    // TODO: hacer consultas cruzada para dar el detalle de la transferencia (IMPLEMENTAR LISTA LIGADA)
+
+
 }
 
 void options_client(Client *client) {
@@ -109,6 +136,11 @@ void options_client(Client *client) {
             system("clear");
             printf("LIST MY ACCOUNTS\n");
             break;
+        case 6:
+            system("clear");
+            printf("BANKING TRANSACTIONS\n");
+            banking_transactions(client);
+            break;
         case 99:
             exit(0);
             break;
@@ -128,6 +160,7 @@ void menu_client(Client *client){
     printf("3. transfer\n");
     printf("4. balance\n");
     printf("5. list my accounts\n");
+    printf("6. banking transactions\n");
     printf("99. exit\n");
     printf("Enter your option: ");
 

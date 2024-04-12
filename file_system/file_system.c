@@ -33,6 +33,7 @@ int get_index_from_file(const char *filename) {
         int initial_value = 1;
         fwrite(&initial_value, sizeof(int), 1, file); //ESCRIBO EL VAlor inicial
         free(file_path);
+        fclose(file);
         return initial_value;
     }
 

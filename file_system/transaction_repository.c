@@ -28,3 +28,33 @@ void register_transaction(Transaction *transaction){
     fclose(file);
 }
 
+
+void fetch_by_account_id(int account_id) {
+
+    FILE *file = fopen(TRANSACTION_DB, "rb");
+    if (file == NULL) {
+        perror("Error al abrir el archivo");
+        return;
+    }
+
+    int found = 0;
+    Transaction transaction;
+    while (fread(&transaction, sizeof(Transaction), 1, file) == 1) {
+        if (transaction.account_id == account_id) {
+            printf("Transaction ID: %d\n", transaction.id);
+            printf("Transaction Type: %s\n", transaction.transaction_type == TRANSFER? "Transferencia": transaction.transaction_type == DEPOSIT? "Deposito": "Retiro");
+            printf("Amount: %.2f\n", transaction.amount);
+            printf("Date and Time: %s", ctime(&transaction.date_time));
+            printf("Account ID: %d\n", transaction.account_id);
+            printf("Transfer ID: %d\n", transaction.transfer_id);
+
+            found = 1;
+        }
+    }
+
+    if (!found) {
+        printf("No se encontraron transacciones para el account ID: %d\n", account_id);
+    }
+
+    fclose(file);
+}

@@ -16,7 +16,10 @@ void create_transaction(Transaction *transaction){
     register_transaction(transaction);
     printf("-----------------------------------\n\n");
 
+}
 
+void get_by_account_id(int account_id) {
+    fetch_by_account_id(account_id);
 }
 
 
