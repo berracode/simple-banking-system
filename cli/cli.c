@@ -6,13 +6,83 @@
 #include "cli.h"
 #include "../service/client_service.h"
 #include "../service/account_service.h"
+#include "../service/transfer_service.h"
+#include "../service/transaction_service.h"
+
+
 
 void clear_input_buffer() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
 }
 
-void options_client() {
+void transfer_money_cli(Client *client){
+    print_client(client);
+
+    // pedirle la cuenta origen al usuario
+    // pedirle la cuenta destino
+    // cantidad a transferir
+
+    Account origin_account;
+    Account destination_account;
+    double amount_to_transfer = 0;
+    printf("Enter the origin account: ");
+    scanf("%s", origin_account.account_number);
+
+    printf("Enter the destination account: ");
+    scanf("%s", destination_account.account_number);
+
+    printf("Amount to transfer: ");
+    scanf("%lf", &amount_to_transfer);
+
+    // buscar en la bd, la cuenta origen y cuenta destino para saber que existen (poner en marcha el position_seek) capa service
+    // validar que el moton a transferir es menor o igual que el monto de la cuenta origen
+
+    get_by_account_number(origin_account.account_number,&origin_account);
+    if(client->id != origin_account.client_id){
+        printf("Account does not belong to the user\n");
+        return;
+    }
+    get_by_account_number(destination_account.account_number,&destination_account);
+
+    if (origin_account.balance < amount_to_transfer){
+        printf("Insufficient balance\n");
+        return;
+    }
+
+    // si el moto es <= cuenta_origen.amount entonces ingresar
+    // una transferencia en la BD transferencia.
+
+    Transfer new_transfer;
+    new_transfer.amount = amount_to_transfer;
+    new_transfer.destination_account = destination_account.id;
+    new_transfer.origin_account = origin_account.id;
+
+    create_transfer(&new_transfer);
+
+
+    // LUEGO registrarla como una transaccion (id, tipo transferencia, monto, cuenta id es cuenta origen)
+    Transaction new_transaction;
+    new_transaction.amount = amount_to_transfer;
+    new_transaction.account_id = origin_account.id;
+    new_transaction.transfer_id = new_transfer.id;
+    new_transaction.transaction_type = TRANSFER;
+    create_transaction(&new_transaction);
+
+
+    // restar el dinero de la cuenta origen
+    double new_balance = origin_account.balance - amount_to_transfer;
+    printf("New balance origin account: %lf\n", new_balance);
+    update_balance(origin_account.id, new_balance, &origin_account);
+
+    // sumar el dinero a la cuenta destino (usar position seek para busquedas rapidas)
+    new_balance = destination_account.balance + amount_to_transfer;
+    printf("New balance destination account: %lf\n", new_balance);
+    update_balance(destination_account.id, new_balance, &destination_account);
+}
+
+void options_client(Client *client) {
+
     int i;
     scanf("%d", &i);
     clear_input_buffer();
@@ -29,8 +99,13 @@ void options_client() {
         case 3:
             system("clear");
             printf("TRANSFER\n");
+            transfer_money_cli(client);
             break;
         case 4:
+            system("clear");
+            printf("BALANCE\n");
+            break;
+        case 5:
             system("clear");
             printf("LIST MY ACCOUNTS\n");
             break;
@@ -51,11 +126,12 @@ void menu_client(Client *client){
     printf("1. Deposit money\n");
     printf("2. withdrawals\n");
     printf("3. transfer\n");
-    printf("4. list my accounts\n");
+    printf("4. balance\n");
+    printf("5. list my accounts\n");
     printf("99. exit\n");
     printf("Enter your option: ");
 
-    options_client();
+    options_client(client);
 
 }
 
@@ -142,7 +218,6 @@ void menu(){
     printf("2. list all client\n");
     printf("3. get by index\n");
     printf("4. Register an account?\n");
-    printf("44. create accout\n");
     printf("5. list all accouts\n");
     printf("99. exit\n");
     printf("Enter your option: ");
@@ -168,20 +243,17 @@ void create_account_cli(){
     do
     {
         system("clear");
-        printf("CREATE ACCOUNT\n");
+        printf("REGISTER AN ACCOUNT\n");
 
         // pregutar si el cliente ya existe.
-        printf("1. Cliente existe.\n");
-        printf("2. Cliente no existe.\n");
+        printf("1. Client exist.\n");
+        printf("2. Client does not exist\n");
         printf("Ingrese su opción: ");
         scanf("%c", &exits);
-        printf("exist: %c\n", exits);
         clear_input_buffer();
         if(exits == '1') {
-            printf("Sí\n");
-            printf("Ingrese documento del cliente: ");
+            printf("Enter document's client: \n");
             scanf("%s", client.document);
-            
             get_client_by_document(client.document, &client);
             if(client.id == -1){
                 printf("Client not found\n");
@@ -189,21 +261,19 @@ void create_account_cli(){
             }
             id_client = client.id;
         } else {
-            //crear cliente
-            printf("No\n");
             create_client_cli(&id_client);
         }
     } while (exits != '1' && exits != '2');
 
-    printf("Ingrese el número de cuenta: ");
+    printf("Enter account number: ");
     scanf("%s", account.account_number);
 
-    printf("Ingrese el tipo de cuenta (0 para ahorros, 1 para corriente): ");
+    printf("Account type (0 for savings, 1 for checking): ");
     int account_type_input;
     scanf("%d", &account_type_input);
-    account.account_type = account_type_input == 0 ? DEBIT : CHECKING;
+    account.account_type = account_type_input == 0 ? SAVINGS : CHECKING;
 
-    printf("Ingrese el balance de la cuenta: ");
+    printf("Enter balance: ");
     scanf("%lf", &account.balance);
 
     account.client_id = id_client;

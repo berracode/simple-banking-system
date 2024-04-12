@@ -4,17 +4,21 @@
 #include "client_service.h"
 #include "../repo/client_repository.h"
 
+void print_client(Client *client){
+    printf("\n\tid: %d", client->id);
+    printf("\n\tName: %s", client->full_name);
+    printf("\n\tdocument: %s", client->document);
+    printf("\n\tphone: %s", client->phone_number);
+    printf("\n\taddress: %s", client->address);
+
+}
+
 void create_client(Client *client){
     printf("client service _ create_client\n");
-    
-    printf("Name: %s\n", client->full_name);
-    printf("document: %s\n", client->document);
-    printf("phone: %s\n", client->phone_number);
-    printf("address: %s\n", client->address);
+    print_client(client);
 
     printf("Size of Client struct: %zu bytes\n", sizeof(Client));
 
-    //FINALMENTE GUARDANDO
     save_client(client);
 }
 

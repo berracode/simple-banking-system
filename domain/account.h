@@ -4,7 +4,7 @@
 #include "transfer.h"
 #include "transaction.h"
 
-enum AccountType { DEBIT, CHECKING };
+enum AccountType { SAVINGS, CHECKING };
 
 #define RECORD_SIZE 300
 typedef struct {

@@ -1,6 +1,6 @@
 #ifndef CLIENT_H
 #define CLIENT_H
-
+#include <stdio.h>
 #include "account.h"
 
 typedef struct {
@@ -14,5 +14,7 @@ typedef struct {
     //puntero
     struct Account *accounts; //account's list
 } Client;
+
+void print_client(Client *client);
 
 #endif /* CLIENT_H */
