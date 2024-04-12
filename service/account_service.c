@@ -2,7 +2,6 @@
 #include <stddef.h>
 #include "../repo/account_repository.h"
 
-
 void create_account(Account *account){
     printf("Creating account...\n");
     printf("ID: %d\n", account->id);

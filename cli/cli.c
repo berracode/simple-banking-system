@@ -360,6 +360,13 @@ void create_account_cli(){
 
     create_account(&account);
 
+     // LUEGO registrarla como una transaccion (id, tipo transferencia, monto, cuenta id es cuenta origen)
+    Transaction initial_transaction;
+    initial_transaction.amount = account.balance;
+    initial_transaction.account_id = account.id;
+    initial_transaction.transaction_type = DEPOSIT;
+    create_transaction(&initial_transaction);
+
 }
 
 void create_client_cli(int *id_client){
