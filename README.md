@@ -37,6 +37,12 @@ This is the approximate architecture that I am using for the project. I wanted i
 
 ![hexagonal](./docs/img/hexagonal-architecture.jpg)
 
+## Entity relationship diagram
+
+This the simple ERD that I have used.
+
+![hexagonal](./docs/img/banking%20system-MER.jpg)
+
 
 ## Usage
 
