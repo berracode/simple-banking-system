@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <time.h>
 
 
@@ -33,26 +34,36 @@ void register_transaction(Transaction *transaction){
 }
 
 
-void fetch_by_account_id(int account_id) {
+int fetch_by_account_id(int account_id, Transaction **transactions) {
 
     FILE *file = fopen(TRANSACTION_DB, "rb");
     if (file == NULL) {
         perror("Error al abrir el archivo");
-        return;
+        return 0;
     }
 
-    int found = 0;
+    int transactions_size = get_index(TRANSACTION_FILE, READING);
+    printf("Size of transactions: %d\n", transactions_size);
+    if(transactions_size == -1){
+        printf("No hay transacciones");
+        return 0;
+    }
+
+    // Crear un arreglo dinámico para almacenar las transacciones
+    *transactions = (Transaction *)malloc(transactions_size * sizeof(Transaction));
+    if (*transactions == NULL) {
+        perror("Error al asignar memoria para las transacciones");
+        fclose(file);
+        return 0;
+    }
+
+    int found = 0, num_transactions=0;
     Transaction transaction;
     while (fread(&transaction, sizeof(Transaction), 1, file) == 1) {
         if (transaction.account_id == account_id) {
-            printf("Transaction ID: %d\n", transaction.id);
-            printf("Transaction Type: %s\n", transaction.transaction_type == TRANSFER? "Transferencia": transaction.transaction_type == DEPOSIT? "Deposito": "Retiro");
-            printf("Amount: %.2f\n", transaction.amount);
-            printf("Date and Time: %s", ctime(&transaction.date_time));
-            printf("Account ID: %d\n", transaction.account_id);
-            printf("Transfer ID: %d\n", transaction.transfer_id);
-
+            (*transactions)[num_transactions] = transaction;
             found = 1;
+            num_transactions++;
         }
     }
 
@@ -61,4 +72,6 @@ void fetch_by_account_id(int account_id) {
     }
 
     fclose(file);
+    return num_transactions;
+
 }

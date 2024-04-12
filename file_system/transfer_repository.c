@@ -36,3 +36,36 @@ void register_transfer(Transfer *transfer){
     fclose(file);
 }
 
+void fetch_by_transfer_id(const int transfer_id, Transfer *transfer_to_find){
+
+
+    //printf("transfer to find: %d\n", transfer_id);
+
+    FILE *file = fopen(TRANSFER_DB, "rb");
+    if (file == NULL)
+    {
+        perror("Error al abrir el archivo\n");
+        transfer_to_find->id = -1;
+        return;
+    }
+
+    int found = 0;
+
+    Transfer transfer;
+    while (fread(&transfer, sizeof(Transfer), 1, file) == 1)
+    {
+        if (transfer_id == transfer.id){
+            found = 1;
+            memcpy(transfer_to_find, &transfer, sizeof(Transfer));
+            break;
+        }
+    }
+    if (!found)
+    {
+        printf("Transfer with ID %d was not found\n", transfer_id);
+        transfer_to_find->id = -1;
+    }
+    fclose(file);
+}
+
+

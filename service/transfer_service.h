@@ -5,5 +5,6 @@
 
 void create_transfer(Transfer *transfer);
 
+void get_transfer_by_id(const int transfer_id, Transfer *transfer);
 
 #endif

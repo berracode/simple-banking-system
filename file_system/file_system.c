@@ -21,7 +21,7 @@ char *concatenate_filename(const char *filename) {
 int get_index_from_file(const char *filename, enum ModeGetIndex mode_get_index) {
     // Abre el archivo si existe
     char *file_path = concatenate_filename(filename);
-    int current_value;
+    int current_value = -1;
     FILE *file = fopen(file_path, "rb+");
     if (file == NULL && mode_get_index != READING) {
         file = fopen(file_path, "wb+");

@@ -13,7 +13,14 @@ void create_transfer(Transfer *transfer){
 
     register_transfer(transfer);
     printf("-----------------------------------\n\n");
+}
 
+void get_transfer_by_id(const int transfer_id, Transfer *transfer) {
+    //printf("-----------------------------------\n");
+    //printf("Seacrhing transfer by ID %d\n", transfer_id);
+    fetch_by_transfer_id(transfer_id, transfer);
+    //agregar validaciones
+    //printf("-----------------------------------\n\n");
 
 }
 

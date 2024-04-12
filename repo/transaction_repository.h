@@ -5,6 +5,6 @@
 
 // Función para registrar una transacción
 void register_transaction(Transaction *transaction);
-void fetch_by_account_id(int account_id);
+int fetch_by_account_id(int account_id, Transaction **transactions);
 
 #endif /* TRANSACTION_REPOSITORY_H */

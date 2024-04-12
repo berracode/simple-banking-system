@@ -32,6 +32,11 @@ void transfer_money_cli(Client *client){
     printf("Enter the destination account: ");
     scanf("%s", destination_account.account_number);
 
+    if (strcmp(origin_account.account_number , destination_account.account_number)==0){
+        printf("Origin and destination account could not be equals\n");
+        return;
+    }
+
     printf("Amount to transfer: ");
     scanf("%lf", &amount_to_transfer);
 
