@@ -23,8 +23,6 @@ void get_all_accounts(){
 void get_by_account_number(char *account_number, Account *account) {
 
     *account = fetch_by_account_number(account_number);
-    printf("account id: %d\n", account->id);
-    printf("account balance: %f\n", account->balance);
     if(account->id == -1 ){
         printf("Account does not exist!");
         return;

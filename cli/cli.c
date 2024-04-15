@@ -18,6 +18,67 @@ void clear_input_buffer() {
     while ((c = getchar()) != '\n' && c != EOF);
 }
 
+void check_balance(Client *client){
+    //cuenta de la cual se desea conocer el balance
+    // validar que pertenezca al usuario
+    // obtener balance
+
+    Account account;
+    printf("Enter the account: ");
+    scanf("%s", account.account_number);
+
+    get_by_account_number(account.account_number, &account);
+    if(client->id != account.client_id){
+        printf("Account does not belong to the user\n");
+        return;
+    }
+
+    printf("Account balance: %lf\n", account.balance);
+
+
+}
+
+void deposit_money_cli(Client *client) {
+    //cuenta en la cual depositar el dinero
+    //validar que la cuenta pertenece al usuario
+    // actaulizar balance.
+    Account destination_account;
+    double amount_to_deposit = 0;
+    printf("Enter the destination account: ");
+    scanf("%s", destination_account.account_number);
+
+    printf("Amount to deposit: ");
+    scanf("%lf", &amount_to_deposit);
+
+    if (amount_to_deposit == 0){
+        printf("Amout can not be zero\n");
+        return;
+    }
+
+    get_by_account_number(destination_account.account_number, &destination_account);
+    if(client->id != destination_account.client_id){
+        printf("Account does not belong to the user\n");
+        return;
+    }
+
+    Transaction destination_transaction;
+    destination_transaction.amount = amount_to_deposit;
+    destination_transaction.account_id = destination_account.id;
+    destination_transaction.transfer_id = -1;
+    destination_transaction.transaction_type = DEPOSIT;
+    create_transaction(&destination_transaction);
+
+    // SUMAR el dinero de la cuenta destino
+    double new_balance = destination_account.balance + amount_to_deposit;
+    printf("New balance origin account: %lf\n", new_balance);
+    update_balance(destination_account.id, new_balance, &destination_account);
+
+
+
+
+
+}
+
 void transfer_money_cli(Client *client){
     // pedirle la cuenta origen al usuario
     // pedirle la cuenta destino
@@ -141,9 +202,6 @@ void back_menu_client(Client *client){
 
         back_menu_client_options(&option, client);
     } while (option !=1 && option != 2);
-    
-       
-
 
 }
 
@@ -158,6 +216,7 @@ int options_client(Client *client) {
         case 1:
             system("clear");
             printf("DEPOSIT MONEY\n");
+            deposit_money_cli(client);
             break;
         case 2:
             system("clear");
@@ -171,6 +230,7 @@ int options_client(Client *client) {
         case 4:
             system("clear");
             printf("BALANCE\n");
+            check_balance(client);
             break;
         case 5:
             printf("LIST MY ACCOUNTS\n");
