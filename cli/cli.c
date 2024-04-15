@@ -38,6 +38,49 @@ void check_balance(Client *client){
 
 }
 
+
+void withdrawals_cli(Client *client) {
+    //cuenta en la cual retirar el dinero
+    //validar que la cuenta pertenece al usuario
+    // actaulizar balance.
+    Account origin_account;
+    double amount_to_withdraw = 0;
+    printf("Enter the amount to withdraw: ");
+    scanf("%s", origin_account.account_number);
+
+    printf("Amount: ");
+    scanf("%lf", &amount_to_withdraw);
+
+    if (amount_to_withdraw <= 0){
+        printf("Amout must be greater than zero\n");
+        return;
+    }
+
+    get_by_account_number(origin_account.account_number, &origin_account);
+    if(client->id != origin_account.client_id){
+        printf("Account does not belong to the user\n");
+        return;
+    }
+
+    if(origin_account.balance < amount_to_withdraw){
+        printf("Insuficient balance\n");
+        return;
+    }
+
+    Transaction origin_transaction;
+    origin_transaction.amount = amount_to_withdraw;
+    origin_transaction.account_id = origin_account.id;
+    origin_transaction.transfer_id = -1;
+    origin_transaction.transaction_type = WITHDRAWAL;
+    create_transaction(&origin_transaction);
+
+    // RESTAR el dinero de la cuenta destino
+    double new_balance = origin_account.balance - amount_to_withdraw;
+    printf("New balance origin account: %lf\n", new_balance);
+    update_balance(origin_account.id, new_balance, &origin_account);
+
+}
+
 void deposit_money_cli(Client *client) {
     //cuenta en la cual depositar el dinero
     //validar que la cuenta pertenece al usuario
@@ -50,7 +93,7 @@ void deposit_money_cli(Client *client) {
     printf("Amount to deposit: ");
     scanf("%lf", &amount_to_deposit);
 
-    if (amount_to_deposit == 0){
+    if (amount_to_deposit <= 0){
         printf("Amout can not be zero\n");
         return;
     }
@@ -72,10 +115,6 @@ void deposit_money_cli(Client *client) {
     double new_balance = destination_account.balance + amount_to_deposit;
     printf("New balance origin account: %lf\n", new_balance);
     update_balance(destination_account.id, new_balance, &destination_account);
-
-
-
-
 
 }
 
@@ -221,6 +260,7 @@ int options_client(Client *client) {
         case 2:
             system("clear");
             printf("withdrawals\n");
+            withdrawals_cli(client);
             break;
         case 3:
             system("clear");
