@@ -16,11 +16,11 @@ Simple banking system will be able to execute the following operations (all oper
 
 - [x] Create account (including clients creation if it does not exist)
 - [x] Log in in the bank system using document and password
-- [ ] deposit money to an account
-- [ ] withdraw the money from the accounts
+- [x] deposit money to an account
+- [x] withdraw the money from the accounts
 - [x] Transfer money to another account
 - [x] List transactions with some details
-- [ ] keep login bucle
+- [x] keep login bucle
 - [ ] service or daemon to maintain an AVL tree in memory
 - [ ] AVL tree
 - [ ] communication between CLI and SERVER (service or daemon) through sockets (Like Redis o Docker)
