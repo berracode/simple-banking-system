@@ -2,3 +2,5 @@ main
 .vscode/
 .vscode/settings.json
 backup/
+database/
+bin/
