@@ -24,25 +24,25 @@ void get_by_account_number(char *account_number, Account *account) {
 
     *account = fetch_by_account_number(account_number);
     if(account->id == -1 ){
-        printf("Account does not exist!");
+        printf("Account not found!\n");
         return;
     }
 
 }
 
 void update_balance(int account_id, double new_balance, Account *account) {
-    printf("------------------------------------\n\n");
+    //printf("------------------------------------\n\n");
     printf("Updating balance in account number: %s\n", account->account_number);
     printf("Updating balance in account id: %d\n", account_id);
 
-    printf("Balance actual: %f\n", account->balance);
+    //printf("Balance actual: %f\n", account->balance);
     account->balance = new_balance;
     edit_account(account);
-    printf("new Balance actual: %f\n", account->balance);
-    printf("Validating with file...\n");
-    Account account_validated;
-    get_by_account_number(account->account_number, &account_validated);
-    printf("new Balance actual validado: %f\n", account_validated.balance);
+    //printf("new Balance actual: %f\n", account->balance);
+    //printf("Validating with file...\n");
+    //Account account_validated;
+    //get_by_account_number(account->account_number, &account_validated);
+    //printf("new Balance actual validado: %f\n", account_validated.balance);
 
     printf("------------------------------------\n\n");
 

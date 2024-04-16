@@ -9,13 +9,13 @@
 #include "../repo/transaction_repository.h"
 
 void register_transaction(Transaction *transaction){
-     printf("### Creating transaction\n");
+    //printf("### Creating transaction\n");
 
     // Abrir el archivo en modo de escritura binaria
     FILE *file = fopen(TRANSACTION_DB, "ab");
     if (file == NULL) {
-        perror("Error al abrir el archivo");
-        //return 1;
+        perror("Error opening file!\n");
+        return;
     }
 
     transaction->id = get_index(TRANSACTION_FILE, INCREASE);
@@ -23,11 +23,11 @@ void register_transaction(Transaction *transaction){
         printf("Could not save transaction\n");
         return;
     }
-    printf("real id transaction: %d", transaction->id);
+    //printf("real id transaction: %d", transaction->id);
     time_t current_time;
     time(&current_time);
     transaction->date_time = current_time;
-    printf("Fecha y hora actual de la transaccion: %s", ctime(&transaction->date_time));
+    //printf("Fecha y hora actual de la transaccion: %s", ctime(&transaction->date_time));
 
     fwrite(transaction, sizeof(Transaction), 1, file);
     fclose(file);
@@ -50,6 +50,7 @@ int fetch_by_account_id(int account_id, Transaction **transactions) {
     }
 
     // Crear un arreglo dinámico para almacenar las transacciones
+    printf("REAL STRUCT TRANSACTIONS SIZE: %zu\n", sizeof(Transaction));
     *transactions = (Transaction *)malloc(transactions_size * sizeof(Transaction));
     if (*transactions == NULL) {
         perror("Error al asignar memoria para las transacciones");

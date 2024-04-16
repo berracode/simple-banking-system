@@ -19,3 +19,7 @@ void print_transfer_details(Transfer transfer, int account_id) {
     printf("\t\t%s account: %d\n", account_id == transfer.destination_account ? "Origin" : "Destination", 
            account_id != transfer.origin_account ? transfer.origin_account : transfer.destination_account);
 }
+
+void print_headers(char *header) {
+    printf("\t\t#####  %s  #####\n\n", header);
+}

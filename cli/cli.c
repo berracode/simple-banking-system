@@ -10,6 +10,7 @@
 #include "../service/account_service.h"
 #include "../service/transfer_service.h"
 #include "../service/transaction_service.h"
+#include "../service/print_presenter_service.h"
 
 
 
@@ -90,6 +91,12 @@ void deposit_money_cli(Client *client) {
     printf("Enter the destination account: ");
     scanf("%s", destination_account.account_number);
 
+    get_by_account_number(destination_account.account_number, &destination_account);
+    if(client->id != destination_account.client_id){
+        printf("Account does not belong to the user\n");
+        return;
+    }
+
     printf("Amount to deposit: ");
     scanf("%lf", &amount_to_deposit);
 
@@ -98,11 +105,6 @@ void deposit_money_cli(Client *client) {
         return;
     }
 
-    get_by_account_number(destination_account.account_number, &destination_account);
-    if(client->id != destination_account.client_id){
-        printf("Account does not belong to the user\n");
-        return;
-    }
 
     Transaction destination_transaction;
     destination_transaction.amount = amount_to_deposit;
@@ -113,8 +115,10 @@ void deposit_money_cli(Client *client) {
 
     // SUMAR el dinero de la cuenta destino
     double new_balance = destination_account.balance + amount_to_deposit;
-    printf("New balance origin account: %lf\n", new_balance);
+    printf("Actual balance in account: %lf\n", destination_account.balance);
     update_balance(destination_account.id, new_balance, &destination_account);
+    printf("New balance in account: %lf\n", destination_account.balance);
+
 
 }
 
@@ -194,7 +198,7 @@ void transfer_money_cli(Client *client){
 }
 
 void banking_transactions(Client *client) {
-    printf("\t\t#####  BANKING TRANSACTIONS  #####\n\n\n");
+    print_headers("BANKING TRANSACTIONS");
     // preguntarle de que cuenta quiere las transacciones
     Account account_to_find;
     printf("Enter the account: ");
@@ -206,7 +210,7 @@ void banking_transactions(Client *client) {
         return;
     }
     system("clear");
-    printf("\t\t#####  BANKING TRANSACTIONS  #####\n\n\n");
+    print_headers("BANKING TRANSACTIONS");
 
     // con el ID de la CUENTA, buscar transacciones por id cuenta
     get_by_account_id(account_to_find.id);
@@ -254,26 +258,26 @@ int options_client(Client *client) {
     switch (i){
         case 1:
             system("clear");
-            printf("DEPOSIT MONEY\n");
+            print_headers("DEPOSIT MONEY");
             deposit_money_cli(client);
             break;
         case 2:
             system("clear");
-            printf("withdrawals\n");
+            print_headers("WITHDRAWALS");
             withdrawals_cli(client);
             break;
         case 3:
             system("clear");
-            printf("TRANSFER\n");
+            print_headers("TRANSFER");
             transfer_money_cli(client);
             break;
         case 4:
             system("clear");
-            printf("BALANCE\n");
+            print_headers("BALANCE");
             check_balance(client);
             break;
         case 5:
-            printf("LIST MY ACCOUNTS\n");
+            print_headers("LIST MY ACCOUNTS");
             break;
         case 6:
             system("clear");
@@ -322,13 +326,8 @@ void menu_client(Client *client){
 }
 
 void login(){
-    printf("\t\t#####  LOGIN  #####\n\n");
+    print_headers("LOGIN");
 
-    //user ingresa su documento y su password. 
-    //se busca si el usuario con documento existe
-    //se compara si la password == a la ingresada por el user.
-    //si sí, muestra el menu para realizar deposito, retiro, o transferencia
-    //sino, le muestra usuario o contraseña incorrecta, volver a intentarlo, salir o volver al menu anterior
     Client client;
     char document_to_find[30];
     char password_entered[10];

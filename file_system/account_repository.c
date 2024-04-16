@@ -50,14 +50,12 @@ void fetch_all_accounts() {
 }
 
 Account fetch_by_account_number(const char *account_number){
-
-    printf("Account to find on file: %s\n", account_number);
+    printf("\t\t...Account to find on file: %s\n", account_number);
     Account account;
 
     FILE *file = fopen(ACCOUNT_DB, "rb");
-    if (file == NULL)
-    {
-        perror("Error al abrir el archivo\n");
+    if (file == NULL) {
+        perror("Error opening file!\n");
         account.id = -1;
         return account;
     }
@@ -74,21 +72,20 @@ Account fetch_by_account_number(const char *account_number){
 }
 
 void edit_account(Account *account) {
-    printf("### Editing account\n");
-    printf("ACCOUNT SIZE: %zu\n", sizeof(Account));
+    //printf("### Editing account\n");
+    //printf("ACCOUNT SIZE: %zu\n", sizeof(Account));
     long seek_position = (account->id - 1) * sizeof(Account);
-    printf("posicion a buscar: %ld\n", seek_position);
+    //printf("posicion a buscar: %ld\n", seek_position);
 
     FILE *file = fopen(ACCOUNT_DB, "r+b");
     if (file == NULL) {
-        perror("Error al abrir el archivo");
+        perror("Error opening file!\n");
         return;
     }
 
       // move pointer's file to register position
-    if (fseek(file, seek_position, SEEK_SET) != 0)
-    {
-        perror("Error al mover el puntero de archivo");
+    if (fseek(file, seek_position, SEEK_SET) != 0){
+        perror("Error moving pointer");
         fclose(file);
         return;
     }
