@@ -2,14 +2,25 @@
 #include "print_presenter_service.h"
 
 void print_transaction_details(Transaction transaction) {
-    printf("Transaction ID: %d\n", transaction.id);
+   /* printf("Transaction ID: %d\n", transaction.id);
     printf("Transaction Type: %s\n", 
            transaction.transaction_type == TRANSFER ? "Transferencia" : 
            transaction.transaction_type == DEPOSIT ? "Depósito" : "Retiro");
     printf("Amount: %.2f\n", transaction.amount);
     printf("Date and Time: %s", ctime(&transaction.date_time));
     printf("Account ID: %d\n", transaction.account_id);
-    printf("Transfer ID: %d\n", transaction.transfer_id);
+    printf("Transfer ID: %d\n", transaction.transfer_id);*/
+
+    printf("%-12d %-16s %-8.2f %-20s %-10d %-12d\n",
+        transaction.id,
+        transaction.transaction_type == TRANSFER ? "Transferencia" :
+        transaction.transaction_type == DEPOSIT ? "Depósito" : "Retiro",
+        transaction.amount,
+        ctime(&transaction.date_time),
+        transaction.account_id,
+        transaction.transfer_id);
+
+
 }
 
 void print_transfer_details(Transfer transfer, int account_id) {

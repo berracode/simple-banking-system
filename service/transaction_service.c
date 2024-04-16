@@ -26,9 +26,14 @@ void get_by_account_id(int account_id) {
     Transaction *transactions;
     int len = fetch_by_account_id(account_id, &transactions);
 
-    for (int i = 0; i < len; i++){
-        printf("\n#########  TRANSACTION #%d  #########\n", (i+1));
+    printf("\n#########  TRANSACTIONS  #########\n");
 
+    printf("%-12s %-16s %-8s %-20s %-10s %-12s\n",
+       "Transaction ID", "Transaction Type", "Amount", "Date and Time", "Account ID", "Transfer ID");
+
+    for (int i = 0; i < len; i++){
+        //printf("--------------------------------------------------\n\n");
+        //printf("TRANSACTION #%dn", (i+1));
         Transaction transaction = transactions[i];
         print_transaction_details(transaction);
 

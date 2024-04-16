@@ -8,12 +8,11 @@
 #include "../repo/transfer_repository.h"
 
 void register_transfer(Transfer *transfer){
-    printf("### Creating transfer on file\n");
+    printf("\t\tCreating transfer on file\n");
 
-    // Abrir el archivo en modo de escritura binaria
     FILE *file = fopen(TRANSFER_DB, "ab");
     if (file == NULL) {
-        perror("Error al abrir el archivo");
+        perror("Error opening file");
         //return 1;
     }
 
@@ -22,29 +21,21 @@ void register_transfer(Transfer *transfer){
         printf("Could not save transfer\n");
         return;
     }
-    printf("Real transfer id: %d\n", transfer->id);
     time_t current_time;
     time(&current_time);
     transfer->date_time = current_time;
-    printf("Fecha y hora actual de la transferencia: %s\n", ctime(&transfer->date_time));
-
-
 
     fwrite(transfer, sizeof(Transfer), 1, file);
 
-    // Cerrar el archivo
     fclose(file);
 }
 
 void fetch_by_transfer_id(const int transfer_id, Transfer *transfer_to_find){
-
-
-    //printf("transfer to find: %d\n", transfer_id);
+    printf("\t\t...Transfer to find: %d\n", transfer_id);
 
     FILE *file = fopen(TRANSFER_DB, "rb");
-    if (file == NULL)
-    {
-        perror("Error al abrir el archivo\n");
+    if (file == NULL) {
+        perror("Error opening file");
         transfer_to_find->id = -1;
         return;
     }

@@ -185,17 +185,19 @@ void transfer_money_cli(Client *client){
     destination_transaction.transfer_id = new_transfer.id;
     destination_transaction.transaction_type = TRANSFER;
     create_transaction(&destination_transaction);
-
+    printf("-----------------------------------\n\n");
 
     // restar el dinero de la cuenta origen
     double new_balance = origin_account.balance - amount_to_transfer;
-    printf("New balance origin account: %lf\n", new_balance);
     update_balance(origin_account.id, new_balance, &origin_account);
+    printf("New balance origin account: %lf\n\n", origin_account.balance);
+
 
     // sumar el dinero a la cuenta destino (usar position seek para busquedas rapidas)
     new_balance = destination_account.balance + amount_to_transfer;
-    printf("New balance destination account: %lf\n", new_balance);
     update_balance(destination_account.id, new_balance, &destination_account);
+    printf("New balance destination account: %lf\n\n", destination_account.balance);
+
 }
 
 void banking_transactions(Client *client) {
