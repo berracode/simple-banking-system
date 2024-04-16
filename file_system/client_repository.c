@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+
 #include "../repo/client_repository.h"
 #include "print_util.h"
 #include "file_system.h"
@@ -13,12 +14,19 @@ int column_widths[] = {COLUMN_ID_WIDTH, COLUMN_NAME_WIDTH, COLUMN_DOCUMENT_WIDTH
 
 char *headers[] = {"ID", "Nombre", "Documento", "Direccion", "Telefono"};
 
-void save_client(Client *client)
-{
+void save_client(Client *client) {
     printf("llamando adaptador secundario (que implementa puerto secundario o de salida)\n");
+
+
+
+    if (path_valid(BASE_PATH) == -1) {
+        printf("Could not create directory\n");
+        client->id = -1;
+        return;
+    }
+
     FILE *file = fopen(CLIENT_DB, "ab");
-    if (file == NULL)
-    {
+    if (file == NULL){
         perror("Error al abrir el archivo");
         // return 1;
     }

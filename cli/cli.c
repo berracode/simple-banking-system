@@ -289,7 +289,6 @@ int options_client(Client *client) {
         case 7:
             system("clear");
             printf("Log out\n");
-            menu();
             break;
         case 99:
             exit(0);
@@ -444,6 +443,10 @@ void create_account_cli(){
             id_client = client.id;
         } else {
             create_client_cli(&id_client);
+            if(id_client == -1){
+                printf("Error creating client\n");
+                return;
+            }
         }
     } while (exits != '1' && exits != '2');
 

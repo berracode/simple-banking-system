@@ -1,5 +1,8 @@
 #include "constants.h"
 
+char BASE_PATH[15] =  "database/models";
+
+
 const char *BASE_INDEX = "database/index/";
 const char *CLIENT_INDEX = "client_index";
 const char *ACCOUNT_INDEX = "account_index";

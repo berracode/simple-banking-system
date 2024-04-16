@@ -3,6 +3,8 @@
 
 #define MAX_PATH_LENGTH 50
 
+extern char BASE_PATH[15];
+
 extern const char *BASE_INDEX;
 extern const char *CLIENT_INDEX;
 extern const char *ACCOUNT_INDEX;
