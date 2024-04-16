@@ -6,15 +6,12 @@
 #include "../repo/account_repository.h"
 
 void save_account(Account *account){
-    printf("### Creating account\n");
-    printf("ACCOUNT SIZE: %zu\n", sizeof(Account));
+    printf("\t\tCreating account on file\n");
 
-
-    // Abrir el archivo en modo de escritura binaria
     FILE *file = fopen(ACCOUNT_DB, "ab");
     if (file == NULL) {
-        perror("Error al abrir el archivo");
-        //return 1;
+        perror("Error opening file!");
+        return;
     }
 
     account->id = get_index(ACCOUNT_FILE, INCREASE);
@@ -25,19 +22,19 @@ void save_account(Account *account){
 
     fwrite(account, sizeof(Account), 1, file);
 
-    // Cerrar el archivo
     fclose(file);
 }
 
 void fetch_all_accounts() {
     FILE *file = fopen(ACCOUNT_DB, "rb");
     if (file == NULL) {
-        perror("Error al abrir el archivo");
+        perror("Error opening file");
         return;
     }
 
     Account account;
     while (fread(&account, sizeof(Account), 1, file) == 1) {
+        //linked list for this. Don't print info in repos
         printf("ID: %d\n", account.id);
         printf("Número de cuenta: %s\n", account.account_number);
         printf("Tipo de cuenta: %s\n", account.account_type == SAVINGS ? "Ahorros" : "Corriente");
@@ -72,7 +69,7 @@ Account fetch_by_account_number(const char *account_number){
 }
 
 void edit_account(Account *account) {
-    //printf("### Editing account\n");
+    printf("\t\tEditing account...\n");
     //printf("ACCOUNT SIZE: %zu\n", sizeof(Account));
     long seek_position = (account->id - 1) * sizeof(Account);
     //printf("posicion a buscar: %ld\n", seek_position);

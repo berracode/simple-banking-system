@@ -36,7 +36,6 @@ void check_balance(Client *client){
 
     printf("Account balance: %lf\n", account.balance);
 
-
 }
 
 
@@ -46,10 +45,10 @@ void withdrawals_cli(Client *client) {
     // actaulizar balance.
     Account origin_account;
     double amount_to_withdraw = 0;
-    printf("Enter the amount to withdraw: ");
+    printf("Enter the account: ");
     scanf("%s", origin_account.account_number);
 
-    printf("Amount: ");
+    printf("Enter the amount to withdraw: ");
     scanf("%lf", &amount_to_withdraw);
 
     if (amount_to_withdraw <= 0){
@@ -77,8 +76,10 @@ void withdrawals_cli(Client *client) {
 
     // RESTAR el dinero de la cuenta destino
     double new_balance = origin_account.balance - amount_to_withdraw;
-    printf("New balance origin account: %lf\n", new_balance);
+    printf("Actual balance in account: %lf\n", origin_account.balance);
     update_balance(origin_account.id, new_balance, &origin_account);
+    printf("New balance in account: %lf\n", origin_account.balance);
+
 
 }
 
