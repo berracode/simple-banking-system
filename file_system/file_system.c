@@ -9,6 +9,7 @@
 int exists_directory(const char *path) {
     struct stat st = {0};
     if (stat(path, &st) == -1) {
+        printf("NO EXISTE el path: %s\n", path);
         if (mkdir(path, 0777) == -1) {
             perror("Error al crear el directorio");
             return -1;

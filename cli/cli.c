@@ -224,21 +224,8 @@ void banking_transactions(Client *client) {
 
 }
 
-void back_menu_client_options(int *options, Client *client){
-    scanf("%d", options);
-    clear_input_buffer();
-    switch (*options){
-    case 1:
-        menu_client(client);
-        break;
-    default:
-        exit(0);
-        break;
-    }
 
-}
-
-void back_menu_client(Client *client){
+void back_menu_client(){
     int option = 0;
     do{
         printf("--------------------------------------------------\n\n");
@@ -246,8 +233,13 @@ void back_menu_client(Client *client){
         printf("[ 2 ]. exit\n");
         printf("Enter your option: ");
 
-        back_menu_client_options(&option, client);
+        scanf("%d", &option);
+        clear_input_buffer();
     } while (option !=1 && option != 2);
+
+    if(option == 2){
+        exit(0);
+    }
 
 }
 
@@ -298,8 +290,9 @@ int options_client(Client *client) {
             system("clear");
             printf("You have to select a correct option.\n");
     }
-    if (incorrect_option != 1){
-        back_menu_client(client);
+    if (incorrect_option != 1 && i !=7){
+        back_menu_client();
+        i=-1;
     }
     return i;
 }
@@ -307,7 +300,6 @@ int options_client(Client *client) {
 void menu_client(Client *client){
 
     int option = 0;
-    
     do{
         system("clear");
         printf("\t\t#####  WELCOME DEAR %s  #####\n\n",client->full_name);
@@ -324,6 +316,7 @@ void menu_client(Client *client){
 
         option = options_client(client);
     } while (option != 99 && option != 7);
+    printf("Logout...\n");
 
 }
 
