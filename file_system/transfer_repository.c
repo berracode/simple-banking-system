@@ -31,7 +31,7 @@ void register_transfer(Transfer *transfer){
 }
 
 void fetch_by_transfer_id(const int transfer_id, Transfer *transfer_to_find){
-    printf("\t\t...Transfer to find: %d\n", transfer_id);
+    //printf("\t\t...Transfer to find: %d\n", transfer_id);
 
     FILE *file = fopen(TRANSFER_DB, "rb");
     if (file == NULL) {

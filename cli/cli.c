@@ -463,6 +463,7 @@ void create_account_cli(){
     initial_transaction.amount = account.balance;
     initial_transaction.account_id = account.id;
     initial_transaction.transaction_type = DEPOSIT;
+    initial_transaction.transfer_id = 0;
     create_transaction(&initial_transaction);
 
 }
