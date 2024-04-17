@@ -10,6 +10,15 @@ Now I have got a good prototype, our SYSBANSI is able to:
 - Transfer money between accounts
 - List transactions with some details
 
+### Main menu:
+
+![main_menu](./docs/img/main_menu.png)
+
+### Clien menu:
+
+![menu_client](./docs/img/menu_client.png)
+
+
 ## Future characteristics
 
 Simple banking system will be able to execute the following operations (all operations at the file level) through CLI:
