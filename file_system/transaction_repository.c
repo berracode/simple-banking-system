@@ -43,14 +43,12 @@ int fetch_by_account_id(int account_id, Transaction **transactions) {
     }
 
     int transactions_size = get_index(TRANSACTION_FILE, READING);
-    printf("Size of transactions: %d\n", transactions_size);
     if(transactions_size == -1){
         printf("No hay transacciones");
         return 0;
     }
 
     // Crear un arreglo dinámico para almacenar las transacciones
-    printf("REAL STRUCT TRANSACTIONS SIZE: %zu\n", sizeof(Transaction));
     *transactions = (Transaction *)malloc(transactions_size * sizeof(Transaction));
     if (*transactions == NULL) {
         perror("Error al asignar memoria para las transacciones");

@@ -70,7 +70,7 @@ void withdrawals_cli(Client *client) {
     Transaction origin_transaction;
     origin_transaction.amount = amount_to_withdraw;
     origin_transaction.account_id = origin_account.id;
-    origin_transaction.transfer_id = -1;
+    origin_transaction.transfer_id = 0;
     origin_transaction.transaction_type = WITHDRAWAL;
     create_transaction(&origin_transaction);
 
@@ -110,7 +110,7 @@ void deposit_money_cli(Client *client) {
     Transaction destination_transaction;
     destination_transaction.amount = amount_to_deposit;
     destination_transaction.account_id = destination_account.id;
-    destination_transaction.transfer_id = -1;
+    destination_transaction.transfer_id = 0;
     destination_transaction.transaction_type = DEPOSIT;
     create_transaction(&destination_transaction);
 
@@ -393,7 +393,7 @@ void menu(){
 
     printf("[ 1 ]. Login to your account \n");
     printf("[ 2 ]. Register an account?\n");
-    printf("[ 3 ]. List all clients\n");
+    printf("[ 3 ]. List all clients (only for test)\n");
     printf("[ 4 ]. Get client by some ID (only for test)\n");
     printf("[ 5 ]. List all accouts. (only for test)\n");
     printf("[ 99]. exit\n");
@@ -417,12 +417,12 @@ void create_account_cli(){
     do
     {
         system("clear");
-        printf("REGISTER AN ACCOUNT\n");
+        print_headers("REGISTER AN ACCOUNT");
 
         // pregutar si el cliente ya existe.
         printf("1. Client exist.\n");
         printf("2. Client does not exist\n");
-        printf("Ingrese su opción: ");
+        printf("Enter your option: ");
         scanf("%c", &exits);
         clear_input_buffer();
         if(exits == '1') {
@@ -434,7 +434,7 @@ void create_account_cli(){
                 return;
             }
             id_client = client.id;
-        } else {
+        } else if (exits == '2') {
             create_client_cli(&id_client);
             if(id_client == -1){
                 printf("Error creating client\n");
@@ -465,11 +465,12 @@ void create_account_cli(){
     initial_transaction.transaction_type = DEPOSIT;
     initial_transaction.transfer_id = 0;
     create_transaction(&initial_transaction);
+    printf("\nAccount Created successfully!\n");
 
 }
 
 void create_client_cli(int *id_client){
-    printf("CREATE CLIENT\n");
+    print_headers("CREATE CLIENT");
 
     Client new_client;
 
@@ -495,6 +496,9 @@ void create_client_cli(int *id_client){
 
     create_client(&new_client);
     *id_client = new_client.id;
+    if(*id_client != -1) {
+        printf("Client created!\n");
+    }
 
 }
 

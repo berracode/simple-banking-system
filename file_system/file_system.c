@@ -9,7 +9,6 @@
 int exists_directory(const char *path) {
     struct stat st = {0};
     if (stat(path, &st) == -1) {
-        printf("NO EXISTE el path: %s\n", path);
         if (mkdir(path, 0777) == -1) {
             perror("Error al crear el directorio");
             return -1;
@@ -22,24 +21,16 @@ int path_valid(const char *path_to_validated){
 
     char directory[MAX_PATH_LENGTH];
     strcpy(directory, path_to_validated);
-
-    // Dividir la cadena en tokens usando '/'
     char *token = strtok(directory, "/");
     char path[MAX_PATH_LENGTH] = "";
 
     while (token != NULL) {
-        // Concatenar el token actual al path
         strcat(path, token);
         strcat(path, "/");
-
-        // Asegurar que el directorio exista
-        printf("PATH: %s\n", path);
         if (exists_directory(path) == -1) {
             printf("No se pudo crear el directorio '%s'.\n", path);
             return -1;
         }
-
-        // Avanzar al siguiente token
         token = strtok(NULL, "/");
     }
     return 0;
@@ -68,7 +59,6 @@ int get_index_from_file(const char *filename, enum ModeGetIndex mode_get_index) 
     }
 
     char *file_path = concatenate_filename(filename);
-    printf("path aquu %s\n", file_path);
     int current_value = -1;
     FILE *file = fopen(file_path, "rb+");
     if (file == NULL && mode_get_index != READING) {
@@ -97,7 +87,6 @@ int get_index_from_file(const char *filename, enum ModeGetIndex mode_get_index) 
         fclose(file);
     }
     free(file_path);
-    printf("current value: %d\n", current_value);
 
     return current_value;
 

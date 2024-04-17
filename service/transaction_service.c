@@ -79,6 +79,9 @@ void get_by_account_id(int account_id) {
             print_transfer_details(transfer, transaction.account_id);
 
         }
+        for (int i = 0; i < 5; i++){
+            free(data[i]);
+        }
 
         free(data);
         print_separator_line(column_widths, sizeof(column_widths) / sizeof(column_widths[0]));

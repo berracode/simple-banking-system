@@ -70,9 +70,9 @@ Account fetch_by_account_number(const char *account_number){
 
 void edit_account(Account *account) {
     printf("\t\tEditing account...\n");
-    printf("ACCOUNT SIZE: %zu\n", sizeof(Account));
+    //printf("ACCOUNT SIZE: %zu\n", sizeof(Account));
     long seek_position = (account->id - 1) * sizeof(Account);
-    printf("posicion a buscar: %ld\n", seek_position);
+    //printf("posicion a buscar: %ld\n", seek_position);
 
     FILE *file = fopen(ACCOUNT_DB, "r+b");
     if (file == NULL) {

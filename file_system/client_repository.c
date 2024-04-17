@@ -15,9 +15,6 @@ int column_widths[] = {COLUMN_ID_WIDTH, COLUMN_NAME_WIDTH, COLUMN_DOCUMENT_WIDTH
 char *headers[] = {"ID", "Nombre", "Documento", "Direccion", "Telefono"};
 
 void save_client(Client *client) {
-    printf("llamando adaptador secundario (que implementa puerto secundario o de salida)\n");
-
-
 
     if (path_valid(BASE_PATH) == -1) {
         printf("Could not create directory\n");
@@ -28,7 +25,8 @@ void save_client(Client *client) {
     FILE *file = fopen(CLIENT_DB, "ab");
     if (file == NULL){
         perror("Error al abrir el archivo");
-        // return 1;
+        client->id = -1;
+        return;
     }
 
     client->id = get_index(CLIENT_FILE, INCREASE);
@@ -142,12 +140,11 @@ void fetch_by_random_index(int index)
 void fetch_by_document(const char *document, Client *client_to_find)
 {
 
-    printf("client to find: %s\n", document);
+    printf("\t\t...client to find: %s\n", document);
 
     FILE *file = fopen(CLIENT_DB, "rb");
-    if (file == NULL)
-    {
-        perror("Error al abrir el archivo\n");
+    if (file == NULL) {
+        perror("Error opening file");
         client_to_find->id = -1;
         return;
     }
@@ -159,40 +156,14 @@ void fetch_by_document(const char *document, Client *client_to_find)
     print_separator_line(column_widths, sizeof(column_widths) / sizeof(column_widths[0]));
 
     Client client;
-    while (fread(&client, sizeof(Client), 1, file) == 1)
-    {
+    while (fread(&client, sizeof(Client), 1, file) == 1) {
         if (strcmp(document, client.document) == 0){
             found = 1;
-            char **data = malloc(5 * sizeof(char *));
-            if (data == NULL){
-                perror("Error: No se pudo asignar memoria para data");
-                return;
-            }
-            for (int i = 0; i < 5; i++){
-                data[i] = malloc((column_widths[i] + 1) * sizeof(char));
-                if (data[i] == NULL){
-                    perror("Error: No se pudo asignar memoria para data[i]");
-                    return;
-                }
-            }
-            snprintf(data[0], column_widths[0] + 1, "%d", client.id);
-            strcpy(data[1], client.full_name);
-            strcpy(data[2], client.document);
-            strcpy(data[3], client.address);
-            strcpy(data[4], client.phone_number);
-            print_row(column_widths, data, 5);
-
-            for (int i = 0; i < 5; i++){
-                free(data[i]);
-            }
-            free(data);
-            print_separator_line(column_widths, sizeof(column_widths) / sizeof(column_widths[0]));
             memcpy(client_to_find, &client, sizeof(Client));
             break;
         }
     }
-    if (!found)
-    {
+    if (!found) {
         printf("Client with document %s was not found\n", document);
         client_to_find->id = -1;
     }

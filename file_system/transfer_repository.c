@@ -43,16 +43,14 @@ void fetch_by_transfer_id(const int transfer_id, Transfer *transfer_to_find){
     int found = 0;
 
     Transfer transfer;
-    while (fread(&transfer, sizeof(Transfer), 1, file) == 1)
-    {
+    while (fread(&transfer, sizeof(Transfer), 1, file) == 1){
         if (transfer_id == transfer.id){
             found = 1;
             memcpy(transfer_to_find, &transfer, sizeof(Transfer));
             break;
         }
     }
-    if (!found)
-    {
+    if (!found){
         printf("Transfer with ID %d was not found\n", transfer_id);
         transfer_to_find->id = -1;
     }
