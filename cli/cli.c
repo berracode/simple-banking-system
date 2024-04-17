@@ -337,11 +337,8 @@ void login(){
     if(client.id == -1 && strcmp(document_to_find, client.document) != 0) {
         printf("Client not found\n");
     } else {
-        printf("Client exist\n");
         if(strcmp(password_entered, client.password) == 0){
-            printf("Client exist and password is correct\n");
             menu_client(&client);
-
         } else {
             printf("Incorrect password\n");
         }

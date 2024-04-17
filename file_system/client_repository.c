@@ -150,11 +150,6 @@ void fetch_by_document(const char *document, Client *client_to_find)
     }
 
     int found = 0;
-
-    print_separator_line(column_widths, sizeof(column_widths) / sizeof(column_widths[0]));
-    print_row(column_widths, headers, sizeof(headers) / sizeof(headers[0]));
-    print_separator_line(column_widths, sizeof(column_widths) / sizeof(column_widths[0]));
-
     Client client;
     while (fread(&client, sizeof(Client), 1, file) == 1) {
         if (strcmp(document, client.document) == 0){
