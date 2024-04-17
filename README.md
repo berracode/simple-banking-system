@@ -14,7 +14,7 @@ Now I have got a good prototype, our SYSBANSI is able to:
 
 ![main_menu](./docs/img/main_menu.png)
 
-### Clien menu:
+### Client menu:
 
 ![menu_client](./docs/img/menu_client.png)
 
