@@ -46,10 +46,11 @@ void print_transaction_details(Transaction transaction) {
 }
 
 void print_transfer_details(Transfer transfer, int account_id) {
+    printf("|\n");
     printf("|TRANSFER DETAIL\n|\n");
-    printf("|Transfer ID: %d\n", transfer.id);
+    //printf("|Transfer ID: %d\n", transfer.id);
     printf("|%s Amount: %.2f\n", account_id == transfer.origin_account ? "Outgoing" : "Incoming", transfer.amount);
-    printf("|%s account: %d\n", account_id == transfer.destination_account ? "Origin" : "Destination", 
+    printf("|%s account: %d\n", account_id == transfer.destination_account ? "Origin" : "Destination",
            account_id != transfer.origin_account ? transfer.origin_account : transfer.destination_account);
 }
 
